@@ -1,0 +1,32 @@
+.data
+array: .word 1, 2, 3, 4, 5, 6, 7, 8, 9, 10  # The array of numbers to sum
+sum: .word 0  # The sum of the numbers
+
+.text
+.globl main
+main:
+    la a1, array  # Load the address of the array into a1
+    la a3, sum    # Load the address of the sum into a3
+
+    # Sum the numbers
+    li a2, 10  # Initialize the counter
+sum_loop:
+
+    lw a4, 0(a1)  # Load a number from the array into a4
+    lw a5, 0(a3)  # Load the sum into a5
+    add a5, a5, a4  # Add the number to the sum
+    sw a5, 0(a3)  # Store the sum
+    addi a1, a1, 4  # Move to the next number in the array
+    addi a2, a2, -1  # Decrement the counter
+    bnez a2, sum_loop  # If the counter is not zero, loop again
+
+# Print the sum
+    li a7, 1  # System call number for print integer
+    lw a0, 0(a3)  # Load the sum into a0
+    ecall  # Print the sum
+    
+    
+    # Exit the program
+    li a7, 93           # System call number for exit
+    li a0, 0            # Exit code 0
+    ecall
